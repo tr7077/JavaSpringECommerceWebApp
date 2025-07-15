@@ -19,11 +19,11 @@ public class OrderItem {
     private int quantity;
     private BigDecimal price;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

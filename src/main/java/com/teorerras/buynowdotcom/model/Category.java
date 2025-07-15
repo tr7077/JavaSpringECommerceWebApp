@@ -18,7 +18,7 @@ public class Category {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category") // cascade all maybe
     private List<Product> productList;
 
     public Category(String name) {
