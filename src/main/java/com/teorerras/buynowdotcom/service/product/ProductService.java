@@ -1,15 +1,15 @@
 package com.teorerras.buynowdotcom.service.product;
 
+import com.teorerras.buynowdotcom.dtos.ImageDto;
+import com.teorerras.buynowdotcom.dtos.ProductDto;
 import com.teorerras.buynowdotcom.model.*;
-import com.teorerras.buynowdotcom.repository.CartItemRepository;
-import com.teorerras.buynowdotcom.repository.CategoryRepository;
-import com.teorerras.buynowdotcom.repository.OrderItemRepository;
-import com.teorerras.buynowdotcom.repository.ProductRepository;
+import com.teorerras.buynowdotcom.repository.*;
 import com.teorerras.buynowdotcom.request.AddProductRequest;
 import com.teorerras.buynowdotcom.request.UpdateProductRequest;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +23,8 @@ public class ProductService implements IProductService {
     private final CategoryRepository categoryRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderItemRepository orderItemRepository;
+    private final ImageRepository imageRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -131,5 +133,21 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> getProductsByName(String name) {
         return productRepository.findByName(name);
+    }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }

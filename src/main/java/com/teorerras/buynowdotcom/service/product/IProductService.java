@@ -1,5 +1,6 @@
 package com.teorerras.buynowdotcom.service.product;
 
+import com.teorerras.buynowdotcom.dtos.ProductDto;
 import com.teorerras.buynowdotcom.model.Product;
 import com.teorerras.buynowdotcom.request.AddProductRequest;
 import com.teorerras.buynowdotcom.request.UpdateProductRequest;
@@ -19,4 +20,7 @@ public interface IProductService {
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByBrand(String brand);
     List<Product> getProductsByName(String name);
+
+    List<ProductDto> getConvertedProducts(List<Product> products);
+    ProductDto convertToDto(Product product);
 }
