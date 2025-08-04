@@ -1,5 +1,6 @@
 package com.teorerras.buynowdotcom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Cart {
     private Long id;
     private BigDecimal totalAmount;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -35,7 +37,22 @@ public class Cart {
         updateTotalAmount();
     }
 
-    private void updateTotalAmount() {
+    public void updateTotalAmount() {
+        BigDecimal total = new BigDecimal(0);
+        for(CartItem item: items){
+            total = total.add(item.getTotalPrice());
+        }
+        this.totalAmount = total;
+    }
 
+    public void addItem(CartItem cartItem) {
+        this.items.add(cartItem);
+        cartItem.setCart(this);
+        updateTotalAmount();
+    }
+
+    public void clearCart() {
+        this.items.clear();
+        updateTotalAmount();
     }
 }

@@ -1,8 +1,6 @@
 package com.teorerras.buynowdotcom.request;
 
 import com.teorerras.buynowdotcom.model.Category;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import java.math.BigDecimal;

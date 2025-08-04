@@ -1,5 +1,6 @@
 package com.teorerras.buynowdotcom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class OrderItem {
     private int quantity;
     private BigDecimal price;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -27,7 +29,7 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public OrderItem(int quantity, BigDecimal price, Order order, Product product) {
+    public OrderItem(Order order, Product product, int quantity, BigDecimal price) {
         this.quantity = quantity;
         this.price = price;
         this.order = order;

@@ -1,5 +1,6 @@
 package com.teorerras.buynowdotcom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class Category {
     private Long id;
     private String name;
 
+    @JsonIgnore // infinite loop since products call categories that call products that call categories....
     @OneToMany(mappedBy = "category") // cascade all maybe
     private List<Product> productList;
 

@@ -1,5 +1,6 @@
 package com.teorerras.buynowdotcom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teorerras.buynowdotcom.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,13 +21,14 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long id;
     private LocalDate orderDate;
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
