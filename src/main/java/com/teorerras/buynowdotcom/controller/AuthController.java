@@ -72,6 +72,6 @@ public class AuthController {
                 }
             }
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid of expired access token");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid or expired access token");
     }
 }

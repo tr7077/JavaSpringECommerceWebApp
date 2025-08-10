@@ -1,6 +1,7 @@
 package com.teorerras.buynowdotcom.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.teorerras.buynowdotcom.response.ErrorResponse;
 import com.teorerras.buynowdotcom.security.user.ShopUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -37,20 +37,20 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         } catch (Exception e) {
-            // sendErrorResponse(response);
+            sendErrorResponse(response);
             return;
         }
         filterChain.doFilter(request, response);
     }
 
-//    private void sendErrorResponse(HttpServletResponse response) throws IOException {
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        response.setContentType("application/json");
-//        ErrorResponse errorResponse = new ErrorResponse("Invalid access token, please long and try again!");
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String jsonResponse = objectMapper.writeValueAsString(errorResponse);
-//        response.getWriter().write(jsonResponse);
-//    }
+    private void sendErrorResponse(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        ErrorResponse errorResponse = new ErrorResponse("Invalid access token, log in and try again");
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(errorResponse);
+        response.getWriter().write(jsonResponse);
+    }
 
     public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
