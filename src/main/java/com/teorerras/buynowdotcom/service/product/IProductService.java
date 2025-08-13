@@ -21,6 +21,8 @@ public interface IProductService {
     List<Product> getProductsByBrand(String brand);
     List<Product> getProductsByName(String name);
 
+    List<Product> findDistinctProductsByName();
+
     List<ProductDto> getConvertedProducts(List<Product> products);
     ProductDto convertToDto(Product product);
 }

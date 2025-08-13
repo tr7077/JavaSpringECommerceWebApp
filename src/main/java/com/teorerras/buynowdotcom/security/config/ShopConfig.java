@@ -31,11 +31,11 @@ public class ShopConfig {
     private final ShopUserDetailsService userDetailsService;
     private final JwtEntryPoint authEntryPoint;
 
-    @Value("/api/v1")
-    private static String API;
+    //@Value("${api.prefix}")
+    private static String API = "/api/v1";
 
     private static final List<String> SECURED_URLS =
-            List.of(API+"/carts?**", API+"/cartItems/**", API+"/orders/**");
+            List.of(API+"/carts/**", API+"/cartItems/**", API+"/orders/**");
 
     @Bean
     public ModelMapper modelMapper() {

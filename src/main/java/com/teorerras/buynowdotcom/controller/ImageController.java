@@ -42,7 +42,7 @@ public class ImageController {
     }
 
     @SneakyThrows
-    @GetMapping("/image/{imageId}/download")
+    @GetMapping("/image/download/{imageId}")
     public ResponseEntity<ByteArrayResource> downloadImage(@PathVariable Long imageId) {
             Image image = iImageService.getImageById(imageId);
             ByteArrayResource resource = new ByteArrayResource(image.getImage().getBytes(1, (int) image.getImage().length()));
