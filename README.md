@@ -1,2 +1,3 @@
-# A backend app in java with the spring framework for an e-commerce web app
+# E-Commerce web app in java spring boot (backend)
+## (frontend in reactjs, check other repository)
 ### How to run:
