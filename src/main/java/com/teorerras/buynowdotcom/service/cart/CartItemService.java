@@ -1,5 +1,6 @@
 package com.teorerras.buynowdotcom.service.cart;
 
+import com.teorerras.buynowdotcom.dtos.CartItemDto;
 import com.teorerras.buynowdotcom.model.Cart;
 import com.teorerras.buynowdotcom.model.CartItem;
 import com.teorerras.buynowdotcom.model.Product;
@@ -8,6 +9,7 @@ import com.teorerras.buynowdotcom.repository.CartRepository;
 import com.teorerras.buynowdotcom.service.product.IProductService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,9 +19,10 @@ public class CartItemService implements ICartItemService{
     private final CartRepository cartRepository;
     private final ICartService cartService;
     private final IProductService productService;
+    private final ModelMapper modelMapper;
 
     @Override
-    public void addItemToCart(Long cartId, Long productId, int quantity) {
+    public CartItem addItemToCart(Long cartId, Long productId, int quantity) {
         Cart cart = cartService.getCart(cartId);
         Product product = productService.getProductById(productId);
         CartItem cartItem = cart.getItems()
@@ -39,6 +42,7 @@ public class CartItemService implements ICartItemService{
         cart.addItem(cartItem);
         cartItemRepository.save(cartItem);
         cartRepository.save(cart);
+        return cartItem;
     }
 
     @Override
@@ -74,5 +78,11 @@ public class CartItemService implements ICartItemService{
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("CartItem not found"));
+    }
+
+    @Override
+    public CartItemDto convertToDto(CartItem cartItem) {
+        CartItemDto cartItemDto = modelMapper.map(cartItem, CartItemDto.class);
+        return cartItemDto;
     }
 }

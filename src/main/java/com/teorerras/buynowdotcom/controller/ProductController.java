@@ -55,28 +55,28 @@ public class ProductController {
             return ResponseEntity.ok(new ApiResponse("Delete product success!", productId));
     }
 
-    @GetMapping("/by-brand-and-name")
+    @GetMapping("/by/brand-and-name")
     public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brandName, @RequestParam String productName) {
             List<Product> products = productService.getProductsByBrandAndName(brandName, productName);
             List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
             return ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }
 
-    @GetMapping("/by-category-and-brand")
+    @GetMapping("/by/category-and-brand")
     public ResponseEntity<ApiResponse> getProductByCategoryAndBrand(@RequestParam String category, @RequestParam String brand) {
             List<Product> products = productService.getProductsByCategoryAndBrand(category, brand);
             List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
             return ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }
 
-    @GetMapping("/by-name/{name}")
+    @GetMapping("/by/name/{name}")
     public ResponseEntity<ApiResponse> getProductByName(@PathVariable String name) {
             List<Product> products = productService.getProductsByName(name);
             List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
             return ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }
 
-    @GetMapping("/by-brand")
+    @GetMapping("/by/brand")
     public ResponseEntity<ApiResponse> findProductByBrand(@RequestParam String brand) {
 
             List<Product> products = productService.getProductsByBrand(brand);
@@ -84,9 +84,8 @@ public class ProductController {
             return ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }
 
-    @GetMapping("/by-category/{category}")
+    @GetMapping("/by/category/{category}")
     public ResponseEntity<ApiResponse> findProductsByCategory(@PathVariable String category) {
-
             List<Product> products = productService.getProductsByCategory(category);
             List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
             return ResponseEntity.ok(new ApiResponse("success", convertedProducts));
@@ -97,5 +96,17 @@ public class ProductController {
         List<Product> products = productService.findDistinctProductsByName();
         List<ProductDto> productDtos = productService.getConvertedProducts(products);
         return ResponseEntity.ok(new ApiResponse("Found", productDtos));
+    }
+
+    @GetMapping("/distinct/brands")
+    public ResponseEntity<ApiResponse> getDistinctBrands(){
+        return ResponseEntity.ok(new ApiResponse("Found", productService.getAllDistinctBrands()));
+    }
+
+    @GetMapping("/by/categoryId/{categoryId}")
+    public ResponseEntity<ApiResponse> findProductsByCategoryId(@PathVariable Long categoryId) {
+        List<Product> products = productService.getProductsByCategoryId(categoryId);
+        List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
+        return ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }
 }

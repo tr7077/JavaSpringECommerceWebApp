@@ -23,6 +23,11 @@ public interface IProductService {
 
     List<Product> findDistinctProductsByName();
 
+    List<String> getAllDistinctBrands();
+
+    List<Product> getProductsByCategoryId(Long categoryId);
+
     List<ProductDto> getConvertedProducts(List<Product> products);
     ProductDto convertToDto(Product product);
+
 }

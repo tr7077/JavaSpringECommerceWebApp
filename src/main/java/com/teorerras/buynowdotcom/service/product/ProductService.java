@@ -150,6 +150,19 @@ public class ProductService implements IProductService {
         return new ArrayList<>(distinctProductMap.values());
     }
 
+    @Override
+    public List<String> getAllDistinctBrands(){
+        return productRepository.findAll()
+                .stream()
+                .map(Product :: getBrand)
+                .distinct()
+                .toList();
+    }
+
+    @Override
+    public List<Product> getProductsByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
 
     @Override
     public List<ProductDto> getConvertedProducts(List<Product> products) {

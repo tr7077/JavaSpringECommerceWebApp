@@ -24,9 +24,10 @@ public class CartService implements ICartService{
 
     @Override
     public Cart getCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
-        cart.updateTotalAmount();
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+        if(cart != null) {
+            cart.updateTotalAmount();
+        }
         return cartRepository.save(cart);
     }
 
@@ -39,8 +40,7 @@ public class CartService implements ICartService{
             cart.updateTotalAmount();
             return cartRepository.save(cart);
         }
-        System.out.println("cart is null");
-        return null;
+        throw new EntityNotFoundException("Cart not found");
     }
 
     @Override

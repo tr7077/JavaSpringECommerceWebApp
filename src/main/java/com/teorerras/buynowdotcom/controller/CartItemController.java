@@ -1,6 +1,8 @@
 package com.teorerras.buynowdotcom.controller;
 
+import com.teorerras.buynowdotcom.dtos.CartItemDto;
 import com.teorerras.buynowdotcom.model.Cart;
+import com.teorerras.buynowdotcom.model.CartItem;
 import com.teorerras.buynowdotcom.model.User;
 import com.teorerras.buynowdotcom.response.ApiResponse;
 import com.teorerras.buynowdotcom.service.cart.ICartItemService;
@@ -23,10 +25,12 @@ public class CartItemController {
             @RequestParam Long productId,
             @RequestParam int quantity
     ) {
-        User user = userService.getAuthenticatedUser(); // userId
-        Cart userCart = cartService.initializeNewCartForUser(user);
-        cartItemService.addItemToCart(userCart.getId(), productId, quantity);
-        return ResponseEntity.ok(new ApiResponse("Item added successfully", null));
+        // User user = userService.getAuthenticatedUser(); // userId
+        // Cart userCart = cartService.initializeNewCartForUser(user);
+        // userCart.getId()
+        CartItem newCartItem = cartItemService.addItemToCart(1L, productId, quantity);
+        CartItemDto cartItemDto = cartItemService.convertToDto(newCartItem);
+        return ResponseEntity.ok(new ApiResponse("Item added successfully", cartItemDto));
     }
 
     @DeleteMapping("/cart/{cartId}/item/{itemId}/remove")
