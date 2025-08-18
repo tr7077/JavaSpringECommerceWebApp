@@ -2,9 +2,7 @@ package com.teorerras.buynowdotcom.security.config;
 
 import com.teorerras.buynowdotcom.security.jwt.AuthTokenFilter;
 import com.teorerras.buynowdotcom.security.jwt.JwtEntryPoint;
-import com.teorerras.buynowdotcom.security.user.ShopUserDetails;
 import com.teorerras.buynowdotcom.security.user.ShopUserDetailsService;
-import jakarta.annotation.ManagedBean;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,20 +31,16 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true)
 public class ShopConfig {
+    @Value("${api.prefix}")
+    private static String API = "/api/vi";
+    private static final List<String> SECURED_URLS =
+            List.of(API + "/carts/**", API + "/cartItems/**", API + "/orders/**");
     private final ShopUserDetailsService userDetailsService;
     private final JwtEntryPoint authEntryPoint;
-    private static String API = "/api/v1";
-    private static final List<String> SECURED_URLS =
-            List.of(API+"/carts/**", API+"/cartItems/**", API+"/orders/**");
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws  Exception {
-        return authConfig.getAuthenticationManager();
     }
 
     @Bean
@@ -60,12 +54,16 @@ public class ShopConfig {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         var authProvider = new DaoAuthenticationProvider();
-        // depricated, fix it
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-        return  authProvider;
+        return authProvider;
     }
 
     @Bean
@@ -79,6 +77,7 @@ public class ShopConfig {
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
+
     }
 
     @Bean

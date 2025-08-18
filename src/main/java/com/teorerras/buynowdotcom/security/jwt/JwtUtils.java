@@ -26,7 +26,6 @@ public class JwtUtils {
     @Value("${auth.token.refreshExpirationInMils}")
     private String refreshExpirationTime;
 
-    // depricated, fix it
     public String generateAccessTokenForUser(Authentication authentication) {
         ShopUserDetails userPrincipal = (ShopUserDetails) authentication.getPrincipal();
 
@@ -52,8 +51,17 @@ public class JwtUtils {
                 .compact();
     }
 
+    private Key key() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
+
+    private Date calculateExpirationDate(String expirationTimeString) {
+        long expirationTime = Long.parseLong(expirationTimeString); // Convert String to long
+        return new Date(System.currentTimeMillis() + expirationTime);
+    }
+
     public String getUsernameFromToken(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                 .setSigningKey(key())
                 .build()
                 .parseClaimsJws(token)
@@ -62,7 +70,7 @@ public class JwtUtils {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
+            Jwts.parserBuilder()
                     .setSigningKey(key())
                     .build()
                     .parseClaimsJws(token);
@@ -70,15 +78,6 @@ public class JwtUtils {
         } catch (JwtException e) {
             throw new JwtException(e.getMessage());
         }
-    }
-
-    private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-    }
-
-    private Date calculateExpirationDate(String expirationTimeString) {
-        long expirationTime = Long.parseLong(expirationTimeString); // Convert String to long
-        return new Date(System.currentTimeMillis() + expirationTime);
     }
 
 }
