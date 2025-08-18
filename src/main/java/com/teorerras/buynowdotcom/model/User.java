@@ -44,4 +44,7 @@ public class User {
                     referencedColumnName = "id")
     )
     private Collection<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addressList;
 }

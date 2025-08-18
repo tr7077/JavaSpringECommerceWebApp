@@ -25,10 +25,9 @@ public class CartItemController {
             @RequestParam Long productId,
             @RequestParam int quantity
     ) {
-        // User user = userService.getAuthenticatedUser(); // userId
-        // Cart userCart = cartService.initializeNewCartForUser(user);
-        // userCart.getId()
-        CartItem newCartItem = cartItemService.addItemToCart(1L, productId, quantity);
+        User user = userService.getAuthenticatedUser(); // userId
+        Cart userCart = cartService.initializeNewCartForUser(user);
+        CartItem newCartItem = cartItemService.addItemToCart(userCart.getId(), productId, quantity);
         CartItemDto cartItemDto = cartItemService.convertToDto(newCartItem);
         return ResponseEntity.ok(new ApiResponse("Item added successfully", cartItemDto));
     }
