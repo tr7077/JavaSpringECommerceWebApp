@@ -1,3 +1,3 @@
-# E-Commerce web app in java spring boot (backend)
-## a fully working api the connects an online e-shop with a MySql database for managing users, orders, products, carts, etc.. Security & login/signup has been implemented as well.
+# E-Commerce web app in java spring boot (api + mysql)
+## an app that exposes endpoints for managing an online e-shop. Connects with a MySql database for full CRUD operations
 ### How to run:
